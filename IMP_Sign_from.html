@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Firebase Auth Demo</title>
+    <link rel="stylesheet" href="signUpStye.css">
+  </head>
+  <body>
+    <!-- Sign Up Form -->
+    <form id="signupForm">
+      <input type="email" id="signupEmail" placeholder="Email" required />
+      <input
+        type="password"
+        id="signupPassword"
+        placeholder="Password"
+        required
+      /> 
+      <button type="button" id="signupBtn">Sign Up</button>
+    <p>Have an account <a href="#" id="showLoginPage">Login here</a></p>
+    </form>
+
+    <!-- Sign In Form -->
+    <form id="loginForm">
+      <input type="email" id="loginEmail" placeholder="Email" required />
+      <input
+        type="password"
+        id="loginPassword"
+        placeholder="Password"
+        required
+      />
+      <button type="button" id="loginBtn">Sign In</button>
+    </form>
+    <!-- password reset -->
+    <form id="passwordReset">
+      <input
+        type="email"
+        name=""
+        id="resetEmail"
+        placeholder="Email"
+        required
+      />
+      <button type="button" id="passResetBtn">Reset Password</button>
+
+    </form>
+<button type="button" id="logoutBtn">Logut</button>
+    <!-- Firebase SDK (Modular - v9) -->
+    <script type="module">
+      // Import the functions 
+      
+        import {
+          auth,
+          createUserWithEmailAndPassword,
+          signInWithEmailAndPassword,
+          sendPasswordResetEmail,
+          signOut
+        } from './firebase.js';
+      
+        // Now you can use the auth functions as usual
+      // Handle sign up
+      document.getElementById("signupBtn").addEventListener("click", () => {
+        const email = document.getElementById("signupEmail").value;
+        const password = document.getElementById("signupPassword").value;
+        createUserWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            const user = userCredential.user;
+            console.log("User signed up:", user);
+            alert(`sign in success ${email}`);
+          })
+          .catch((error) => {
+            console.error("Sign-up error:", error.message);
+            alert("Error: " + error.message);
+          });
+      });
+
+      // Handle sign in
+      document.getElementById("loginBtn").addEventListener("click", () => {
+        const email = document.getElementById("loginEmail").value;
+        const password = document.getElementById("loginPassword").value;
+        signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            const user = userCredential.user;
+            console.log("User signed in:", user);
+            alert(` welcom ${email}`);
+          })
+          .catch((error) => {
+            console.error("Sign-in error:", error.message);
+            alert("Error: " + error.message);
+          });
+      });
+
+  // Password reset
+document.getElementById("passResetBtn").addEventListener("click", () => {
+  const email = document.getElementById("resetEmail").value;
+  sendPasswordResetEmail(auth, email)
+    .then(() => {
+      alert("Password reset email sent!");
+    })
+    .catch((error) => {
+      alert("Error: " + error.message);
+    });
+});
+    
+      //monitor user state
+        auth.onAuthStateChanged((user) => {
+          if (user) {
+            console.log("User is signed in:", user);
+            document.getElementById("signupForm").style.display = "none";
+
+          } else {
+            document.getElementById("loginForm").style.display = "block";
+
+            console.log("User is signed out");
+          }
+        });
+
+        //logout
+        document.getElementById("logoutBtn").addEventListener("click",()=>{
+          signOut(auth)
+    .then(() => {
+      alert("Logged out successfully!");
+    })
+    .catch((error) => {
+      alert("Error logging out: " + error.message);
+    });
+});
+
+
+
+    </script>
+  </body>
+</html>

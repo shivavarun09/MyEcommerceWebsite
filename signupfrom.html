@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- sign up form starting-->
+    <form id="signupForm">
+      <input type="email" id="signupEmail" placeholder="Email" required />
+      <input
+        type="password"
+        id="signupPassword"
+        placeholder="Password"
+        required
+      />
+      <button type="button" id="signupBtn">Sign Up</button>
+    </form>
+    <!-- sign up from ending -->
+
+    <!-- signin form staring -->
+    <form id="loginForm">
+      <input type="email" id="loginEmail" placeholder="Email" required />
+      <input
+        type="password"
+        id="loginPassword"
+        placeholder="Password"
+        required
+      />
+      <button type="button" id="loginBtn">Sign In</button>
+    </form>
+    <!-- sign in from ending -->
+    <script type="module">
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyBvC0rFyi170XK9VKwBe6WkkqjUSLEPqSk",
+        authDomain: "myecom-a0332.firebaseapp.com",
+        projectId: "myecom-a0332",
+        storageBucket: "myecom-a0332.firebasestorage.app",
+        messagingSenderId: "627145514239",
+        appId: "1:627145514239:web:89ae2b8f6845479fe7c0ca"
+      };
+    
+      // Initialize Firebase
+      const app = firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+    </script>
+    <script>
+      //sign up form handling starting
+      document.getElementById("signupBtn").addEventListener("click", () => {
+        const email = document.getElementById("signupEmail").value;
+        const password = document.getElementById("signupPassword").value;
+        auth.createUserWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            const user = userCredential.user;
+            console.log("User signed up:", user);
+            alert("Sign-up successful!");
+          })
+          .catch((error) => {
+            console.error("Sign-up error:", error.message);
+            alert("Error: " + error.message);
+          });
+      });
+      //sign up form handling ending
+
+      //sign in handing startin
+      document.getElementById("loginBtn").addEventListener("click", () => {
+        const email = document.getElementById("loginEmail").value;
+        const password = document.getElementById("loginPassword").value;
+        auth
+          .signInWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            const user = userCredential.user;
+            console.log("User signed in:", user);
+            alert("Sign-in successful!");
+          })
+          .catch((error) => {
+            console.error("Sign-in error:", error.message);
+            alert("Error: " + error.message);
+          });
+      });
+      //sign in handing ending
+
+      
+
+    </script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  </body>
+</html>
